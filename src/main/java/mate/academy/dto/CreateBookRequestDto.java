@@ -18,7 +18,7 @@ public class CreateBookRequestDto {
     @NotBlank
     private String isbn;
     @NotNull
-    @DecimalMin(1)
+    @DecimalMin("1")
     private BigDecimal price;
     @Size(min = 1, max = 255)
     private String description;
