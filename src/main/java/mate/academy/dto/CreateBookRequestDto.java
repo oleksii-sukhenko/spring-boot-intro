@@ -1,6 +1,6 @@
 package mate.academy.dto;
 
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -18,7 +18,7 @@ public class CreateBookRequestDto {
     @NotBlank
     private String isbn;
     @NotNull
-    @Min(1)
+    @DecimalMin(1)
     private BigDecimal price;
     @Size(min = 1, max = 255)
     private String description;
