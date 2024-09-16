@@ -1,9 +1,8 @@
-package mate.academy.repo.book;
+package mate.academy.repository.book;
 
 import jakarta.persistence.criteria.Predicate;
 import java.util.Arrays;
 import mate.academy.model.Book;
-import mate.academy.repo.SpecificationProvider;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
