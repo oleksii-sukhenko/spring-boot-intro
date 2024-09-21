@@ -8,9 +8,12 @@ import lombok.RequiredArgsConstructor;
 import mate.academy.dto.book.BookDto;
 import mate.academy.dto.book.BookSearchParameters;
 import mate.academy.dto.book.CreateBookRequestDto;
+import mate.academy.model.User;
 import mate.academy.service.book.BookService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,8 +33,9 @@ public class BookController {
 
     @GetMapping
     @Operation(summary = "Get list of all books", description = "Get a list of all available books")
-    public List<BookDto> getAll(Pageable pageable) {
-        return bookService.findAll(pageable);
+    public List<BookDto> getAll(Authentication authentication, Pageable pageable) {
+        User user = (User) authentication.getPrincipal();
+        return bookService.findAll(user.getEmail(), pageable);
     }
 
     @GetMapping("/{id}")
@@ -40,6 +44,7 @@ public class BookController {
         return bookService.findById(id);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     @Operation(summary = "Create a new book", description = "Create a new book")
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto bookDto) {
