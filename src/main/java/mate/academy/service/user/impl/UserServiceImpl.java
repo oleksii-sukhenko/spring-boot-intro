@@ -4,6 +4,7 @@ import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.user.UserRegistrationRequestDto;
 import mate.academy.dto.user.UserRegistrationResponseDto;
+import mate.academy.exception.EntityNotFoundException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.mapper.UserMapper;
 import mate.academy.model.Role;
@@ -34,5 +35,12 @@ public class UserServiceImpl implements UserService {
         Role role = roleRepository.findByRole(RoleName.ROLE_USER);
         user.setRoles(Set.of(role));
         return userMapper.toDto(userRepository.save(user));
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Can't find user with id: " + id)
+        );
     }
 }
