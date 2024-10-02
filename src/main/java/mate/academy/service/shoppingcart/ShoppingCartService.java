@@ -1,17 +1,15 @@
 package mate.academy.service.shoppingcart;
 
-import mate.academy.dto.cartitem.CartItemDto;
 import mate.academy.dto.cartitem.CartItemRequestDto;
 import mate.academy.dto.cartitem.CartItemUpdateRequestDto;
 import mate.academy.dto.shoppingcart.ShoppingCartDto;
-import org.springframework.security.core.Authentication;
 
 public interface ShoppingCartService {
-    ShoppingCartDto getAllInfo(Authentication authentication);
+    ShoppingCartDto getAllInfo(Long userId);
 
-    CartItemDto addBookToCart(CartItemRequestDto requestDto, Authentication authentication);
+    ShoppingCartDto addBookToCart(CartItemRequestDto requestDto, Long userId);
 
-    CartItemDto updateBooksQuantity(CartItemUpdateRequestDto requestDto, Long id);
+    ShoppingCartDto updateBooksQuantity(CartItemUpdateRequestDto requestDto, Long id);
 
-    void deleteCartItem(Long id, Authentication authentication);
+    void deleteCartItem(Long id);
 }

@@ -5,13 +5,13 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import mate.academy.dto.cartitem.CartItemDto;
 import mate.academy.dto.cartitem.CartItemRequestDto;
 import mate.academy.dto.cartitem.CartItemUpdateRequestDto;
 import mate.academy.dto.shoppingcart.ShoppingCartDto;
+import mate.academy.model.User;
 import mate.academy.service.shoppingcart.ShoppingCartService;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Shopping cart management", description = "Endpoints for managing shopping carts")
 @RestController
-@RequestMapping(value = "/cart")
+@RequestMapping("/cart")
 @SecurityRequirement(name = "bearerAuth")
 @RequiredArgsConstructor
 public class ShoppingCartController {
@@ -34,8 +34,8 @@ public class ShoppingCartController {
     @Operation(
             summary = "Get information about shopping cart",
             description = "Get all available information about shopping cart")
-    public ShoppingCartDto getAllInfoAboutShoppingCart(Authentication authentication) {
-        return shoppingCartService.getAllInfo(authentication);
+    public ShoppingCartDto getAllInfoAboutShoppingCart(@AuthenticationPrincipal User user) {
+        return shoppingCartService.getAllInfo(user.getId());
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -44,11 +44,11 @@ public class ShoppingCartController {
             summary = "Add book to shopping cart",
             description = "Add number of book to shopping cart"
     )
-    public CartItemDto addBookToShoppingCart(
-            @RequestBody CartItemRequestDto requestDto,
-            Authentication authentication
+    public ShoppingCartDto addBookToShoppingCart(
+            @RequestBody @Valid CartItemRequestDto requestDto,
+            @AuthenticationPrincipal User user
     ) {
-        return shoppingCartService.addBookToCart(requestDto, authentication);
+        return shoppingCartService.addBookToCart(requestDto, user.getId());
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -57,7 +57,7 @@ public class ShoppingCartController {
             summary = "Change number of books",
             description = "Change number of the books in shopping cart"
     )
-    public CartItemDto changeNumberOfBooks(
+    public ShoppingCartDto changeNumberOfBooks(
             @RequestBody @Valid CartItemUpdateRequestDto requestDto,
             @PathVariable("cartItemId") Long id
     ) {
@@ -71,9 +71,8 @@ public class ShoppingCartController {
             description = "Delete the book from shopping cart"
     )
     public void deleteBookFromShoppingCart(
-            @PathVariable("cartItemId") Long id,
-            Authentication authentication
+            @PathVariable("cartItemId") Long id
     ) {
-        shoppingCartService.deleteCartItem(id, authentication);
+        shoppingCartService.deleteCartItem(id);
     }
 }

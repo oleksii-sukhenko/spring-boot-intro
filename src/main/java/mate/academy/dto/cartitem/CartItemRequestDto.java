@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class CartItemRequestDto {
     @NotNull
+    @Positive
     private Long bookId;
     @Positive
     private int quantity;
