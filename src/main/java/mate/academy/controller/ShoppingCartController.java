@@ -59,9 +59,10 @@ public class ShoppingCartController {
     )
     public ShoppingCartDto changeNumberOfBooks(
             @RequestBody @Valid CartItemUpdateRequestDto requestDto,
-            @PathVariable("cartItemId") Long id
+            @PathVariable("cartItemId") Long id,
+            @AuthenticationPrincipal User user
     ) {
-        return shoppingCartService.updateBooksQuantity(requestDto, id);
+        return shoppingCartService.updateBooksQuantity(requestDto, id, user.getId());
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
