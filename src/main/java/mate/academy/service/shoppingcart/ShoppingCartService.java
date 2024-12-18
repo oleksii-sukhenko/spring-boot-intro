@@ -1,8 +1,10 @@
 package mate.academy.service.shoppingcart;
 
-import mate.academy.dto.cartitem.CartItemRequestDto;
-import mate.academy.dto.cartitem.CartItemUpdateRequestDto;
 import mate.academy.dto.shoppingcart.ShoppingCartDto;
+import mate.academy.dto.shoppingcart.cartitem.CartItemRequestDto;
+import mate.academy.dto.shoppingcart.cartitem.CartItemUpdateRequestDto;
+import mate.academy.model.ShoppingCart;
+import mate.academy.model.User;
 
 public interface ShoppingCartService {
     ShoppingCartDto getAllInfo(Long userId);
@@ -12,4 +14,6 @@ public interface ShoppingCartService {
     ShoppingCartDto updateBooksQuantity(CartItemUpdateRequestDto requestDto, Long id, Long userId);
 
     void deleteCartItem(Long id);
+
+    ShoppingCart createShoppingCart(User user);
 }
