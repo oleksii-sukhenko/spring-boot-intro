@@ -1,4 +1,4 @@
-package mate.academy.dto.cartitem;
+package mate.academy.dto.shoppingcart.cartitem;
 
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
