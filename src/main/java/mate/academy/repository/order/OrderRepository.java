@@ -3,14 +3,14 @@ package mate.academy.repository.order;
 import java.util.List;
 import java.util.Optional;
 import mate.academy.model.Order;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.query.Param;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    Optional<Order> findByIdAndUserId(
-            @Param("userId") Long id,
-            @Param("orderId") Long userId
-    );
+    @EntityGraph(attributePaths = "orderItems")
+    Optional<Order> findByIdAndUserId(Long orderId, Long userId);
 
-    List<Order> findAllByUserId(@Param("userId") Long userId);
+    @EntityGraph(attributePaths = "orderItems")
+    List<Order> findAllByUserId(Long userId, Pageable pageable);
 }

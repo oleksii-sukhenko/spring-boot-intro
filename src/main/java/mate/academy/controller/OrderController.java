@@ -4,13 +4,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.order.OrderRequestDto;
 import mate.academy.dto.order.OrderResponseDto;
+import mate.academy.dto.order.OrderUpdateRequestDto;
 import mate.academy.dto.order.item.OrderItemResponseDto;
 import mate.academy.service.order.OrderService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,8 +49,8 @@ public class OrderController {
     })
     @GetMapping
     @PreAuthorize("hasRole('USER')")
-    public List<OrderResponseDto> getAllOrders(@RequestParam Long userId) {
-        return orderService.getAllOrders(userId);
+    public List<OrderResponseDto> getAllOrders(@RequestParam Long userId, Pageable pageable) {
+        return orderService.getAllOrders(userId, pageable);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -60,7 +61,7 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "Order not found")
     })
     public OrderResponseDto updateOrderStatus(@PathVariable Long id,
-                                              @RequestBody @Valid OrderRequestDto requestDto) {
+                                              @RequestBody OrderUpdateRequestDto requestDto) {
         return orderService.updateOrderStatus(id, requestDto);
     }
 
