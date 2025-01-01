@@ -1,6 +1,5 @@
 package mate.academy.service.user.impl;
 
-import jakarta.transaction.Transactional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.user.UserRegistrationRequestDto;
