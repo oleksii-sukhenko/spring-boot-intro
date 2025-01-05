@@ -1,4 +1,4 @@
-package mate.academy.dto.shoppingcart.cartitem;
+package mate.academy.dto.cartitem;
 
 import lombok.Getter;
 import lombok.Setter;
