@@ -15,5 +15,3 @@ public interface OrderItemMapper {
 
     List<OrderItemResponseDto> toDto(Set<OrderItem> orderItems);
 }
-
-

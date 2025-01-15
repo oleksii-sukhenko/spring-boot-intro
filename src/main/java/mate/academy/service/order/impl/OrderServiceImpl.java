@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
     private User findUserById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(()
-                        -> new OrderProcessingException("User not found with id " + userId));
+                        -> new EntityNotFoundException("User not found with id " + userId));
     }
 
     private ShoppingCart getShoppingCartWithValidation(Long userId) {
@@ -83,12 +83,6 @@ public class OrderServiceImpl implements OrderService {
     private Set<OrderItem> buildOrderItems(Order order, ShoppingCart cart) {
         Set<OrderItem> orderItems = new HashSet<>();
         for (CartItem cartItem : cart.getCartItems()) {
-            if (cartItem.getBook() == null) {
-                throw new OrderProcessingException(
-                        "Book is missing in the cart item for order creation"
-                );
-            }
-
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
             orderItem.setBook(cartItem.getBook());
@@ -114,7 +108,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Page<OrderResponseDto> getUserOrderHistory(Long userId, Pageable pageable) {
         Page<Order> orders = orderRepository.findAllByUserId(userId, pageable);
         return orders.map(orderMapper::toDto);
@@ -131,7 +124,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<OrderItemResponseDto> getOrderItems(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
@@ -142,7 +134,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public OrderItemResponseDto getOrderItem(Long orderId, Long itemId) {
         OrderItem orderItem = orderItemRepository.findByOrderIdAndId(orderId, itemId)
                 .orElseThrow(()

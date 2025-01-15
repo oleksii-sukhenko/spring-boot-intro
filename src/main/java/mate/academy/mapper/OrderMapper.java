@@ -18,4 +18,3 @@ public interface OrderMapper {
 
     Order toModel(OrderRequestDto createOrderRequestDto);
 }
-

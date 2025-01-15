@@ -42,7 +42,7 @@ public class OrderController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Page<OrderResponseDto>> getOrderHistory(
             @AuthenticationPrincipal User user,
-            @PageableDefault(size = 10, sort = "orderDate", direction = Sort.Direction.DESC)
+            @PageableDefault(sort = "orderDate", direction = Sort.Direction.DESC)
             Pageable pageable) {
         return ResponseEntity.ok(orderService.getUserOrderHistory(user.getId(), pageable));
     }
