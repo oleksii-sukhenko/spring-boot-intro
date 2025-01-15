@@ -13,5 +13,7 @@ public interface OrderItemMapper {
     @Mapping(source = "book.id", target = "bookId")
     OrderItemResponseDto toDto(OrderItem orderItem);
 
-    List<OrderItemResponseDto> toDto(Set<OrderItem> orderItems);
+    List<OrderItemResponseDto> toDto(List<OrderItem> orderItems);
+
+    Set<OrderItemResponseDto> toDto(Set<OrderItem> orderItems);
 }

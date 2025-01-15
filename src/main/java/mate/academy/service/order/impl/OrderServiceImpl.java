@@ -2,6 +2,7 @@ package mate.academy.service.order.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -128,9 +129,8 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Order not found with id " + orderId));
-        return order.getOrderItems().stream()
-                .map(orderItemMapper::toDto)
-                .collect(Collectors.toList());
+        List<OrderItem> orderItemsList = new ArrayList<>(order.getOrderItems());
+        return orderItemMapper.toDto(orderItemsList);
     }
 
     @Override

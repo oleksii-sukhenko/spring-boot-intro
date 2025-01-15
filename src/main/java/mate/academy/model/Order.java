@@ -20,14 +20,14 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "orders")
 @Getter
 @Setter
 @SQLDelete(sql = "UPDATE orders SET deleted = true WHERE id = ?")
-@Where(clause = "deleted = false")
+@SQLRestriction("deleted = false")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

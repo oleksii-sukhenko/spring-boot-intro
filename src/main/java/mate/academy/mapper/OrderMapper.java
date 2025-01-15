@@ -11,10 +11,9 @@ import org.mapstruct.Mapping;
 @Mapper(config = MapperConfig.class, uses = {OrderItemMapper.class})
 public interface OrderMapper {
     @Mapping(source = "user.id", target = "userId")
-    @Mapping(source = "orderItems", target = "orderItems")
     OrderResponseDto toDto(Order order);
 
-    List<OrderResponseDto> toDto(List<Order> orders);
+    List<OrderResponseDto> toDto(List<Order> orders); // Мапінг для списків
 
     Order toModel(OrderRequestDto createOrderRequestDto);
 }
