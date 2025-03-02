@@ -8,7 +8,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import mate.academy.dto.book.BookDto;
@@ -81,8 +80,7 @@ public class BookServiceTest {
 
     @Test
     @DisplayName("Verify findAll() returns list of BookDto")
-    public void findAll_ValidEmail_ReturnsListOfBookDto() {
-        String email = "test@example.com";
+    public void findAll_ValidPageable_ReturnsListOfBookDto() {
         Pageable pageable = PageRequest.of(0, 10);
         List<Book> expectedBooks = TestUtil.getBooks();
         List<BookDto> expectedBookDtos = expectedBooks.stream()
@@ -99,12 +97,11 @@ public class BookServiceTest {
 
         when(bookRepository.findAll(pageable)).thenReturn(new PageImpl<>(expectedBooks));
 
-        // Замокати кожен елемент списку
         for (int i = 0; i < expectedBooks.size(); i++) {
             when(bookMapper.toDto(expectedBooks.get(i))).thenReturn(expectedBookDtos.get(i));
         }
 
-        List<BookDto> result = bookService.findAll(email, pageable);
+        List<BookDto> result = bookService.findAll(pageable);
 
         assertNotNull(result);
         assertEquals(expectedBookDtos, result);
@@ -122,37 +119,26 @@ public class BookServiceTest {
             Verify updateBookById() updates when book exists
                         """)
     public void updateBookById_ValidId_UpdatesBook() {
-        CreateBookRequestDto requestDto = new CreateBookRequestDto();
-
-        createUpdatedBook(requestDto);
-
         Long bookId = 1L;
-
-        Book updatedBook = new Book();
-        updatedBook.setId(bookId);
-        updatedBook.setTitle(requestDto.getTitle());
-        updatedBook.setAuthor(requestDto.getAuthor());
-        updatedBook.setIsbn(requestDto.getIsbn());
-        updatedBook.setPrice(requestDto.getPrice());
-
+        CreateBookRequestDto requestDto = TestUtil.createBookRequestDto();
         Book existingBook = TestUtil.getBook();
+        Book updatedBook = TestUtil.getUpdatedBook();
+        BookDto expectedDto = TestUtil.getUpdatedBookDto();
 
         when(bookRepository.findById(bookId)).thenReturn(Optional.of(existingBook));
         doNothing().when(bookMapper).updateBookFromDto(requestDto, existingBook);
         when(bookRepository.save(existingBook)).thenReturn(updatedBook);
+        when(bookMapper.toDto(updatedBook)).thenReturn(expectedDto);
 
-        bookService.updateBookById(bookId, requestDto);
+        BookDto result = bookService.updateBookById(bookId, requestDto);
+
+        assertNotNull(result);
+        assertEquals(expectedDto, result);
 
         verify(bookRepository).findById(bookId);
         verify(bookMapper).updateBookFromDto(requestDto, existingBook);
         verify(bookRepository).save(existingBook);
+        verify(bookMapper).toDto(updatedBook);
         verifyNoMoreInteractions(bookRepository, bookMapper);
-    }
-
-    public void createUpdatedBook(CreateBookRequestDto requestDto) {
-        requestDto.setTitle("Updated Title");
-        requestDto.setAuthor("Updated Author");
-        requestDto.setIsbn("updatedIsbn");
-        requestDto.setPrice(BigDecimal.valueOf(9.99));
     }
 }

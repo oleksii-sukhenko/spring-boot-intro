@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import mate.academy.dto.book.BookDto;
 import mate.academy.dto.book.CreateBookRequestDto;
 import mate.academy.dto.category.CategoryDto;
@@ -43,22 +44,36 @@ public class TestUtil {
     }
 
     public static List<Book> getBooks() {
-        Category firstCategory
-                = createCategory(1L, "first category", "first category");
-        Category secondCategory
-                = createCategory(2L, "second category", "second category");
+        Category firstCategory = createCategory(1L, "first category", "first category");
+        Category secondCategory = createCategory(2L, "second category", "second category");
 
         return List.of(
-                createBook(1L, "First book", "First author",
+                createBook(1L, "First book", "First Author",
                         "first_isbn", "First description", "first_image.img",
                         BigDecimal.valueOf(1.11), Set.of(firstCategory)),
-                createBook(2L, "Second book", "Second author",
+                createBook(2L, "Second book", "Second Author",
                         "second_isbn", "Second description", "second_image.img",
-                        BigDecimal.valueOf(1.11), Set.of(firstCategory)),
-                createBook(3L, "Third book", "Third author",
+                        BigDecimal.valueOf(2.22), Set.of(firstCategory)),
+                createBook(3L, "Third book", "Third Author",
                         "third_isbn", "Third description", "third_image.img",
-                        BigDecimal.valueOf(1.11), Set.of(secondCategory))
+                        BigDecimal.valueOf(3.33), Set.of(secondCategory))
         );
+    }
+
+    public static List<BookDto> getBookDtos() {
+        return getBooks().stream()
+                .map(book -> new BookDto()
+                        .setId(book.getId())
+                        .setTitle(book.getTitle())
+                        .setAuthor(book.getAuthor())
+                        .setIsbn(book.getIsbn())
+                        .setPrice(book.getPrice())
+                        .setDescription(book.getDescription())
+                        .setCoverImage(book.getCoverImage())
+                        .setCategoryIds(book.getCategories().stream()
+                                .map(Category::getId)
+                                .collect(Collectors.toSet())))
+                .toList();
     }
 
     public static Book getBook() {
@@ -69,19 +84,48 @@ public class TestUtil {
 
     public static BookDto getBookDto() {
         return new BookDto()
-                .setId(1L)
-                .setTitle("Book")
-                .setAuthor("Author")
-                .setIsbn("isbn")
-                .setPrice(BigDecimal.valueOf(9.99));
+                .setId(4L)
+                .setTitle("New Book")
+                .setAuthor("New Author")
+                .setIsbn("new_isbn")
+                .setPrice(BigDecimal.valueOf(19.99))
+                .setDescription("New Description")
+                .setCoverImage("new_image.img")
+                .setCategoryIds(Collections.emptySet());
     }
 
     public static CreateBookRequestDto createBookRequestDto() {
         return new CreateBookRequestDto()
-                .setTitle("Book")
-                .setAuthor("Author")
-                .setIsbn("isbn")
-                .setPrice(BigDecimal.valueOf(9.99));
+                .setTitle("New Book")
+                .setAuthor("New Author")
+                .setIsbn("new_isbn")
+                .setPrice(BigDecimal.valueOf(19.99))
+                .setDescription("New Description")
+                .setCoverImage("new_image.img");
+    }
+
+    public static Book getUpdatedBook() {
+        return new Book()
+                .setId(1L)
+                .setTitle("Updated Book")
+                .setAuthor("Updated Author")
+                .setIsbn("updated_isbn")
+                .setPrice(BigDecimal.valueOf(19.99))
+                .setDescription("Updated Description")
+                .setCoverImage("updated_image.img")
+                .setCategories(Collections.emptySet());
+    }
+
+    public static BookDto getUpdatedBookDto() {
+        return new BookDto()
+                .setId(1L)
+                .setTitle("Updated Book")
+                .setAuthor("Updated Author")
+                .setIsbn("updated_isbn")
+                .setPrice(BigDecimal.valueOf(19.99))
+                .setDescription("Updated Description")
+                .setCoverImage("updated_image.img")
+                .setCategoryIds(Collections.emptySet());
     }
 
     public static List<Category> getCategories() {
@@ -91,15 +135,24 @@ public class TestUtil {
         );
     }
 
+    public static List<CategoryDto> getCategoryDtos() {
+        return getCategories().stream()
+                .map(category -> new CategoryDto()
+                        .setId(category.getId())
+                        .setName(category.getName())
+                        .setDescription(category.getDescription())
+                ).toList();
+    }
+
     public static Category getCategory() {
-        return createCategory(1L, "test category", "test category");
+        return createCategory(1L, "first category", "first category");
     }
 
     public static CategoryDto getCategoryDto() {
         return new CategoryDto()
                 .setId(1L)
-                .setName("test category")
-                .setDescription("test description");
+                .setName("first category")
+                .setDescription("first category");
     }
 
     public static CategoryRequestDto categoryRequestDto() {

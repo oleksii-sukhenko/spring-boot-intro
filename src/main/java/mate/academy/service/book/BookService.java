@@ -12,11 +12,11 @@ public interface BookService {
 
     BookDto findById(Long id);
 
-    List<BookDto> findAll(String email, Pageable pageable);
+    List<BookDto> findAll(Pageable pageable);
 
     void deleteById(Long id);
 
-    void updateBookById(Long id, CreateBookRequestDto requestDto);
+    BookDto updateBookById(Long id, CreateBookRequestDto requestDto);
 
     List<BookDto> search(BookSearchParameters bookSearchParameters, Pageable pageable);
 
