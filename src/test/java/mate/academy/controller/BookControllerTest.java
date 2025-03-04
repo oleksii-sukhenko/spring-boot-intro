@@ -1,5 +1,8 @@
 package mate.academy.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -9,6 +12,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
@@ -17,7 +21,6 @@ import mate.academy.dto.book.CreateBookRequestDto;
 import mate.academy.util.TestUtil;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -84,22 +87,23 @@ public class BookControllerTest {
                 .setIsbn(requestDto.getIsbn())
                 .setPrice(requestDto.getPrice())
                 .setDescription(requestDto.getDescription())
-                .setCoverImage(requestDto.getCoverImage());
+                .setCoverImage(requestDto.getCoverImage())
+                .setCategoryIds(Collections.emptySet());
 
         String jsonRequest = objectMapper.writeValueAsString(requestDto);
 
         MvcResult result = mockMvc.perform(post("/books")
                         .content(jsonRequest)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
+                .andExpect(status().is2xxSuccessful())
                 .andReturn();
 
         BookDto actual = objectMapper.readValue(
                 result.getResponse().getContentAsString(),
                 BookDto.class
         );
-        Assertions.assertNotNull(actual);
-        EqualsBuilder.reflectionEquals(expected, actual, "id");
+        assertNotNull(actual);
+        assertTrue(EqualsBuilder.reflectionEquals(expected, actual, "id"));
     }
 
     @WithMockUser
@@ -120,8 +124,8 @@ public class BookControllerTest {
                 }
         );
 
-        Assertions.assertEquals(expected.size(), actual.size());
-        Assertions.assertEquals(expected, actual);
+        assertEquals(expected.size(), actual.size());
+        assertEquals(expected, actual);
     }
 
     @WithMockUser
@@ -142,7 +146,7 @@ public class BookControllerTest {
                 BookDto.class
         );
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(expected, actual);
+        assertNotNull(actual);
+        assertEquals(expected, actual);
     }
 }

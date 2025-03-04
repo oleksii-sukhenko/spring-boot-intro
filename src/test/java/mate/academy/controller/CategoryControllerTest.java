@@ -1,5 +1,8 @@
 package mate.academy.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -18,7 +21,6 @@ import mate.academy.dto.category.CategoryRequestDto;
 import mate.academy.util.TestUtil;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -100,8 +102,8 @@ public class CategoryControllerTest {
                 CategoryDto.class
         );
 
-        Assertions.assertNotNull(actual);
-        EqualsBuilder.reflectionEquals(expected, actual, "id");
+        assertNotNull(actual);
+        assertTrue(EqualsBuilder.reflectionEquals(expected, actual, "id"));
     }
 
     @WithMockUser
@@ -126,8 +128,8 @@ public class CategoryControllerTest {
                 CategoryDto[].class
         );
 
-        Assertions.assertEquals(expected.size(), actual.length);
-        Assertions.assertEquals(expected, Arrays.asList(actual));
+        assertEquals(expected.size(), actual.length);
+        assertEquals(expected, Arrays.asList(actual));
     }
 
     @WithMockUser
@@ -154,8 +156,8 @@ public class CategoryControllerTest {
         System.out.println("Expected" + expected);
         System.out.println("Actual" + actual);
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(expected, actual);
+        assertNotNull(actual);
+        assertEquals(expected, actual);
     }
 
     @WithMockUser(username = "admin", roles = {"ADMIN"})
@@ -183,7 +185,7 @@ public class CategoryControllerTest {
                 CategoryDto.class
         );
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(expected, actual);
+        assertNotNull(actual);
+        assertEquals(expected, actual);
     }
 }

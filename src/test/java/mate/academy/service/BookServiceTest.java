@@ -122,23 +122,16 @@ public class BookServiceTest {
         Long bookId = 1L;
         CreateBookRequestDto requestDto = TestUtil.createBookRequestDto();
         Book existingBook = TestUtil.getBook();
-        Book updatedBook = TestUtil.getUpdatedBook();
-        BookDto expectedDto = TestUtil.getUpdatedBookDto();
 
         when(bookRepository.findById(bookId)).thenReturn(Optional.of(existingBook));
         doNothing().when(bookMapper).updateBookFromDto(requestDto, existingBook);
-        when(bookRepository.save(existingBook)).thenReturn(updatedBook);
-        when(bookMapper.toDto(updatedBook)).thenReturn(expectedDto);
+        when(bookRepository.save(existingBook)).thenReturn(existingBook);
 
-        BookDto result = bookService.updateBookById(bookId, requestDto);
-
-        assertNotNull(result);
-        assertEquals(expectedDto, result);
+        bookService.updateBookById(bookId, requestDto);
 
         verify(bookRepository).findById(bookId);
         verify(bookMapper).updateBookFromDto(requestDto, existingBook);
         verify(bookRepository).save(existingBook);
-        verify(bookMapper).toDto(updatedBook);
         verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 }
