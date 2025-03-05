@@ -33,6 +33,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -156,6 +157,10 @@ public class BookControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     @DisplayName("Update existing book by ID")
+    @Sql(scripts = "classpath:database/book/clear-book-data.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/book/book-data.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void updateBookById_ValidId_ShouldUpdateBook() throws Exception {
         Long bookId = 1L;
         CreateBookRequestDto requestDto = TestUtil.createBookRequestDto();
