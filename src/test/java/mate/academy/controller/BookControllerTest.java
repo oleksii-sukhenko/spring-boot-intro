@@ -170,11 +170,11 @@ public class BookControllerTest {
         MvcResult result = mockMvc.perform(put("/books/{id}", bookId)
                         .content(jsonRequest)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andReturn();
 
         assertNotNull(result.getResponse());
-        assertEquals(HttpStatus.CREATED.value(), result.getResponse().getStatus());
+        assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
     }
 
     @WithMockUser(username = "admin", roles = {"ADMIN"})
@@ -192,7 +192,6 @@ public class BookControllerTest {
         assertEquals(HttpStatus.NO_CONTENT.value(), result.getResponse().getStatus());
     }
 
-    //negative tests
     @WithMockUser
     @Test
     @DisplayName("Get book by invalid ID")

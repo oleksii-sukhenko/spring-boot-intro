@@ -60,7 +60,6 @@ public class BookController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Update book by id", description = "Update book by id")
     public void updateBookById(
             @PathVariable Long id,
