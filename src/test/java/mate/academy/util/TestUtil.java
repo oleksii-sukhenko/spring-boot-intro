@@ -9,6 +9,8 @@ import mate.academy.dto.book.BookDto;
 import mate.academy.dto.book.CreateBookRequestDto;
 import mate.academy.dto.category.CategoryDto;
 import mate.academy.dto.category.CategoryRequestDto;
+import mate.academy.dto.shoppingcart.ShoppingCartDto;
+import mate.academy.dto.shoppingcart.cartitem.CartItemDto;
 import mate.academy.model.Book;
 import mate.academy.model.Category;
 
@@ -174,4 +176,49 @@ public class TestUtil {
                 .setName("Updated Category")
                 .setDescription("Updated Description");
     }
+
+    public static ShoppingCartDto getShoppingCartDto() {
+        ShoppingCartDto shoppingCartDto = new ShoppingCartDto();
+        shoppingCartDto.setId(1L);
+        shoppingCartDto.setUserId(1L);
+
+        CartItemDto cartItem1 = new CartItemDto();
+        cartItem1.setId(1L);
+        cartItem1.setBookId(1L);
+        cartItem1.setBookTitle("First book");
+        cartItem1.setQuantity(2);
+
+        CartItemDto cartItem2 = new CartItemDto();
+        cartItem2.setId(2L);
+        cartItem2.setBookId(2L);
+        cartItem2.setBookTitle("Second book");
+        cartItem2.setQuantity(1);
+
+        shoppingCartDto.setCartItemDtos(Set.of(cartItem1, cartItem2));
+
+        return shoppingCartDto;
+    }
+
+    public static ShoppingCartDto updateShoppingCartDto() {
+        CartItemDto cartItem1 = new CartItemDto();
+        cartItem1.setId(1L);
+        cartItem1.setBookId(1L);
+        cartItem1.setBookTitle("First book");
+        cartItem1.setQuantity(4);
+
+        CartItemDto cartItem2 = new CartItemDto();
+        cartItem2.setId(2L);
+        cartItem2.setBookId(2L);
+        cartItem2.setBookTitle("Second book");
+        cartItem2.setQuantity(1);
+
+        ShoppingCartDto shoppingCartDto = new ShoppingCartDto()
+                .setId(1L)
+                .setUserId(1L);
+
+        shoppingCartDto.setCartItemDtos(Set.of(cartItem1, cartItem2));
+
+        return shoppingCartDto;
+    }
+
 }

@@ -1,12 +1,12 @@
 package mate.academy.dto.shoppingcart;
 
 import java.util.Set;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import mate.academy.dto.shoppingcart.cartitem.CartItemDto;
 
-@Getter
-@Setter
+@Data
+@Accessors(chain = true)
 public class ShoppingCartDto {
     private Long id;
     private Long userId;

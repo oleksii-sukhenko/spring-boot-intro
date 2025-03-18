@@ -9,9 +9,12 @@ import mate.academy.dto.shoppingcart.ShoppingCartDto;
 import mate.academy.dto.shoppingcart.cartitem.CartItemRequestDto;
 import mate.academy.dto.shoppingcart.cartitem.CartItemUpdateRequestDto;
 import mate.academy.model.User;
+import mate.academy.repository.user.UserRepository;
 import mate.academy.service.shoppingcart.ShoppingCartService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,13 +31,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ShoppingCartController {
     private final ShoppingCartService shoppingCartService;
+    private final UserRepository userRepository;
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     @Operation(
             summary = "Get information about shopping cart",
             description = "Get all available information about shopping cart")
-    public ShoppingCartDto getAllInfoAboutShoppingCart(@AuthenticationPrincipal User user) {
+    public ShoppingCartDto getAllInfoAboutShoppingCart(
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return shoppingCartService.getAllInfo(user.getId());
     }
 
@@ -46,8 +54,10 @@ public class ShoppingCartController {
     )
     public ShoppingCartDto addBookToShoppingCart(
             @RequestBody @Valid CartItemRequestDto requestDto,
-            @AuthenticationPrincipal User user
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return shoppingCartService.addBookToCart(requestDto, user.getId());
     }
 
