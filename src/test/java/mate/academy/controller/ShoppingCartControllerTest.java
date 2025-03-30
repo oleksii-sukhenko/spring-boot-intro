@@ -1,9 +1,12 @@
 package mate.academy.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +15,7 @@ import java.util.List;
 import javax.sql.DataSource;
 import mate.academy.dto.shoppingcart.ShoppingCartDto;
 import mate.academy.dto.shoppingcart.cartitem.CartItemRequestDto;
+import mate.academy.dto.shoppingcart.cartitem.CartItemUpdateRequestDto;
 import mate.academy.util.TestUtil;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -108,5 +112,90 @@ public class ShoppingCartControllerTest {
         );
 
         assertEquals(expected.getCartItemDtos(), actual.getCartItemDtos());
+    }
+
+    @Test
+    @WithMockUser(username = "user1@mail.com", roles = "USER")
+    @DisplayName("Change number of books in shopping cart for authenticated user")
+    void changeNumberOfBooks_AuthenticatedUser_ReturnUpdatedShoppingCartDto() throws Exception {
+        ShoppingCartDto expected = TestUtil.updateShoppingCartDto();
+
+        CartItemUpdateRequestDto requestDto = new CartItemUpdateRequestDto()
+                .setQuantity(4);
+
+        Long cartItemId = 1L;
+
+        MvcResult result = mockMvc.perform(
+                        put("/cart/cartItem/{cartItemId}", cartItemId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(requestDto))
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        ShoppingCartDto actual = objectMapper.readValue(
+                result.getResponse().getContentAsString(),
+                ShoppingCartDto.class
+        );
+
+        assertEquals(expected.getCartItemDtos(), actual.getCartItemDtos());
+    }
+
+    @Test
+    @WithMockUser(username = "user1@mail.com", roles = "USER")
+    @DisplayName("Delete book from shopping cart for authenticated user")
+    void deleteBookFromShoppingCart_AuthenticatedUser_ReturnUpdatedShoppingCartDto()
+            throws Exception {
+        ShoppingCartDto expected = TestUtil.getShoppingCartDtoAfterDeletion();
+
+        Long cartItemId = 1L;
+
+        mockMvc.perform(
+                        delete("/cart/cartItem/{cartItemId}", cartItemId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNoContent());
+
+        MvcResult result = mockMvc.perform(get("/cart")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        ShoppingCartDto actual = objectMapper.readValue(
+                result.getResponse().getContentAsString(),
+                ShoppingCartDto.class
+        );
+
+        assertEquals(expected.getCartItemDtos(), actual.getCartItemDtos());
+    }
+
+    @Test
+    @DisplayName("Change number of books for unauthorized user should be unauthorized")
+    void changeNumberOfBooks_UnauthorizedUser_ReturnUnauthorized() throws Exception {
+        CartItemUpdateRequestDto requestDto = new CartItemUpdateRequestDto()
+                .setQuantity(4);
+
+        Long cartItemId = 1L;
+
+        mockMvc.perform(put("/cart/cartItem/{cartItemId}", cartItemId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestDto))
+                        .with(anonymous()))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(username = "guest@mail.com", roles = "GUEST")
+    @DisplayName("Change number of books for unauthorized user should be forbidden")
+    void changeNumberOfBooks_UserWithoutPermission_ReturnForbidden() throws Exception {
+        CartItemUpdateRequestDto requestDto = new CartItemUpdateRequestDto()
+                .setQuantity(4);
+
+        Long cartItemId = 1L;
+
+        mockMvc.perform(put("/cart/cartItem/{cartItemId}", cartItemId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDto)))
+                .andExpect(status().isForbidden());
     }
 }

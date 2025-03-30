@@ -221,4 +221,20 @@ public class TestUtil {
         return shoppingCartDto;
     }
 
+    public static ShoppingCartDto getShoppingCartDtoAfterDeletion() {
+        CartItemDto cartItem2 = new CartItemDto()
+                .setId(2L)
+                .setBookId(2L)
+                .setBookTitle("Second book")
+                .setQuantity(1);
+
+        ShoppingCartDto shoppingCartDto = new ShoppingCartDto()
+                .setId(1L)
+                .setUserId(1L);
+
+        shoppingCartDto.setCartItemDtos(Set.of(cartItem2));
+
+        return shoppingCartDto;
+    }
+
 }

@@ -8,9 +8,9 @@ import lombok.RequiredArgsConstructor;
 import mate.academy.dto.shoppingcart.ShoppingCartDto;
 import mate.academy.dto.shoppingcart.cartitem.CartItemRequestDto;
 import mate.academy.dto.shoppingcart.cartitem.CartItemUpdateRequestDto;
-import mate.academy.model.User;
 import mate.academy.service.shoppingcart.ShoppingCartService;
 import mate.academy.service.user.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Shopping cart management", description = "Endpoints for managing shopping carts")
@@ -67,13 +68,15 @@ public class ShoppingCartController {
     public ShoppingCartDto changeNumberOfBooks(
             @RequestBody @Valid CartItemUpdateRequestDto requestDto,
             @PathVariable("cartItemId") Long id,
-            @AuthenticationPrincipal User user
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        return shoppingCartService.updateBooksQuantity(requestDto, id, user.getId());
+        Long userId = userService.getUserIdByEmail(userDetails.getUsername());
+        return shoppingCartService.updateBooksQuantity(requestDto, id, userId);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/cartItem/{cartItemId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(
             summary = "Delete book from shopping cart",
             description = "Delete the book from shopping cart"
