@@ -8,12 +8,11 @@ import lombok.RequiredArgsConstructor;
 import mate.academy.dto.shoppingcart.ShoppingCartDto;
 import mate.academy.dto.shoppingcart.cartitem.CartItemRequestDto;
 import mate.academy.dto.shoppingcart.cartitem.CartItemUpdateRequestDto;
+import mate.academy.model.User;
 import mate.academy.service.shoppingcart.ShoppingCartService;
-import mate.academy.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ShoppingCartController {
     private final ShoppingCartService shoppingCartService;
-    private final UserService userService;
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
@@ -39,10 +37,9 @@ public class ShoppingCartController {
             summary = "Get information about shopping cart",
             description = "Get all available information about shopping cart")
     public ShoppingCartDto getAllInfoAboutShoppingCart(
-            @AuthenticationPrincipal UserDetails userDetails
+            @AuthenticationPrincipal User user
     ) {
-        Long userId = userService.getUserIdByEmail(userDetails.getUsername());
-        return shoppingCartService.getAllInfo(userId);
+        return shoppingCartService.getAllInfo(user.getId());
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -53,10 +50,9 @@ public class ShoppingCartController {
     )
     public ShoppingCartDto addBookToShoppingCart(
             @RequestBody @Valid CartItemRequestDto requestDto,
-            @AuthenticationPrincipal UserDetails userDetails
+            @AuthenticationPrincipal User user
     ) {
-        Long userId = userService.getUserIdByEmail(userDetails.getUsername());
-        return shoppingCartService.addBookToCart(requestDto, userId);
+        return shoppingCartService.addBookToCart(requestDto, user.getId());
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -68,10 +64,9 @@ public class ShoppingCartController {
     public ShoppingCartDto changeNumberOfBooks(
             @RequestBody @Valid CartItemUpdateRequestDto requestDto,
             @PathVariable("cartItemId") Long id,
-            @AuthenticationPrincipal UserDetails userDetails
+            @AuthenticationPrincipal User user
     ) {
-        Long userId = userService.getUserIdByEmail(userDetails.getUsername());
-        return shoppingCartService.updateBooksQuantity(requestDto, id, userId);
+        return shoppingCartService.updateBooksQuantity(requestDto, id, user.getId());
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")

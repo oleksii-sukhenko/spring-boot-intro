@@ -13,7 +13,6 @@ import mate.academy.repository.role.RoleRepository;
 import mate.academy.repository.user.UserRepository;
 import mate.academy.service.shoppingcart.ShoppingCartService;
 import mate.academy.service.user.UserService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,12 +40,5 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         shoppingCartService.createShoppingCart(user);
         return userMapper.toDto(user);
-    }
-
-    @Override
-    public Long getUserIdByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .map(User::getId)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }
