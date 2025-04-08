@@ -10,6 +10,7 @@ import mate.academy.dto.shoppingcart.cartitem.CartItemRequestDto;
 import mate.academy.dto.shoppingcart.cartitem.CartItemUpdateRequestDto;
 import mate.academy.model.User;
 import mate.academy.service.shoppingcart.ShoppingCartService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Shopping cart management", description = "Endpoints for managing shopping carts")
@@ -34,7 +36,9 @@ public class ShoppingCartController {
     @Operation(
             summary = "Get information about shopping cart",
             description = "Get all available information about shopping cart")
-    public ShoppingCartDto getAllInfoAboutShoppingCart(@AuthenticationPrincipal User user) {
+    public ShoppingCartDto getAllInfoAboutShoppingCart(
+            @AuthenticationPrincipal User user
+    ) {
         return shoppingCartService.getAllInfo(user.getId());
     }
 
@@ -67,6 +71,7 @@ public class ShoppingCartController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/cartItem/{cartItemId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(
             summary = "Delete book from shopping cart",
             description = "Delete the book from shopping cart"

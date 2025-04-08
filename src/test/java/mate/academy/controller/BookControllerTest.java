@@ -41,7 +41,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BookControllerTest {
-
     protected static MockMvc mockMvc;
 
     @Autowired
