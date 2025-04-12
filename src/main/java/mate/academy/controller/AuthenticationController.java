@@ -1,6 +1,7 @@
 package mate.academy.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.user.UserLoginRequestDto;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Authentication management", description = "Endpoints for authentication")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/authentication")
