@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookController {
     private final BookService bookService;
 
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping
     @Operation(summary = "Get list of all books", description = "Get a list of all available books")
     public List<BookDto> getAll(Pageable pageable) {

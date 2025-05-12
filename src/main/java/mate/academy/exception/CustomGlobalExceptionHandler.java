@@ -1,13 +1,16 @@
 package mate.academy.exception;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -56,4 +59,26 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
+    @ExceptionHandler(PropertyReferenceException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidSort(PropertyReferenceException ex) {
+        return ResponseEntity
+                .badRequest()
+                .body(Map.of("error", "Invalid sort parameter: " + ex.getPropertyName()));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Map<String, String>> handleAccessDeniedException(
+            AccessDeniedException ex
+    ) {
+        Map<String, String> body = new HashMap<>();
+        body.put("error", "Forbidden - you do not have permission to access this resource");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handleGeneralError(Exception ex) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "Unexpected error", "message", ex.getMessage()));
+    }
 }

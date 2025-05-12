@@ -1,11 +1,11 @@
 package mate.academy.config;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import mate.academy.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,27 +34,40 @@ public class SecurityConfig {
         return http
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(
-                        auth -> auth
-                                .requestMatchers(
-                                        "/authentication/**",
-                                        "/api/v3/api-docs/**",
-                                        "/api/swagger-ui/**",
-                                        "/api/swagger-ui.html",
-                                        "/swagger-resources/**",
-                                        "/webjars/**"
-                                )
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/books/**",
+                                "/categories/**",
+                                "/authentication/**",
+                                "/api/v3/api-docs/**",
+                                "/api/swagger-ui/**",
+                                "/api/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/webjars/**"
+                        ).permitAll()
+                        .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults())
-                .sessionManagement(
-                        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json");
+                            response.getWriter().write(
+                                    "{\"error\": \"Unauthorized - please provide a valid token\"}"
+                            );
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            response.setContentType("application/json");
+                            response.getWriter().write(
+                                    "{\"error\": \"Forbidden - you do not have access\"}"
+                            );
+                        })
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .addFilterBefore(
-                        jwtAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class
+                        jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
                 )
                 .userDetailsService(userDetailsService)
                 .build();

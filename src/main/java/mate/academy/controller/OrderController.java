@@ -34,7 +34,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @Operation(summary = "Place order", description = "Place order for authenticated user")
     public ResponseEntity<OrderResponseDto> placeOrder(
             @RequestBody @Valid OrderRequestDto request,
@@ -43,7 +43,7 @@ public class OrderController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @Operation(
             summary = "Watch order history",
             description = "Watch order history for authenticated user"

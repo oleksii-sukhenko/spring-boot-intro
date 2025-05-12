@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ShoppingCartController {
     private final ShoppingCartService shoppingCartService;
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping
     @Operation(
             summary = "Get information about shopping cart",
@@ -42,7 +42,7 @@ public class ShoppingCartController {
         return shoppingCartService.getAllInfo(user.getId());
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping
     @Operation(
             summary = "Add book to shopping cart",
@@ -55,7 +55,7 @@ public class ShoppingCartController {
         return shoppingCartService.addBookToCart(requestDto, user.getId());
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PutMapping("/cartItem/{cartItemId}")
     @Operation(
             summary = "Change number of books",
@@ -69,7 +69,7 @@ public class ShoppingCartController {
         return shoppingCartService.updateBooksQuantity(requestDto, id, user.getId());
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @DeleteMapping("/cartItem/{cartItemId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(

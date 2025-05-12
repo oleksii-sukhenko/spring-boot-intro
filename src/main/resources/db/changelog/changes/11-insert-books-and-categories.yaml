@@ -1,0 +1,440 @@
+databaseChangeLog:
+  - changeSet:
+      id: 11-insert-categories
+      author: oleksiisukhenko
+      changes:
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: name
+                  value: "Science Fiction"
+              - column:
+                  name: description
+                  value: "Books about futuristic science and technology"
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 2
+              - column:
+                  name: name
+                  value: "Fantasy"
+              - column:
+                  name: description
+                  value: "Magical and mythical stories"
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 3
+              - column:
+                  name: name
+                  value: "History"
+              - column:
+                  name: description
+                  value: "Historical accounts and analysis"
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+  - changeSet:
+      id: 12-insert-books
+      author: oleksiisukhenko
+      changes:
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: title
+                  value: "The Time Machine"
+              - column:
+                  name: author
+                  value: "H.G. Wells"
+              - column:
+                  name: isbn
+                  value: "ISBN0001"
+              - column:
+                  name: price
+                  valueNumeric: 14.99
+              - column:
+                  name: description
+                  value: "A science fiction novel."
+              - column:
+                  name: cover_image
+                  value: "time_machine.jpg"
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 2
+              - column:
+                  name: title
+                  value: "The Hobbit"
+              - column:
+                  name: author
+                  value: "J.R.R. Tolkien"
+              - column:
+                  name: isbn
+                  value: "ISBN0002"
+              - column:
+                  name: price
+                  valueNumeric: 19.99
+              - column:
+                  name: description
+                  value: "A fantasy adventure."
+              - column:
+                  name: cover_image
+                  value: "hobbit.jpg"
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 3
+              - column:
+                  name: title
+                  value: "Sapiens"
+              - column:
+                  name: author
+                  value: "Yuval Noah Harari"
+              - column:
+                  name: isbn
+                  value: "ISBN0003"
+              - column:
+                  name: price
+                  valueNumeric: 24.50
+              - column:
+                  name: description
+                  value: "History of humankind."
+              - column:
+                  name: cover_image
+                  value: "sapiens.jpg"
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 4
+              - column:
+                  name: title
+                  value: "1984"
+              - column:
+                  name: author
+                  value: "George Orwell"
+              - column:
+                  name: isbn
+                  value: "ISBN0004"
+              - column:
+                  name: price
+                  valueNumeric: 15.00
+              - column:
+                  name: description
+                  value: "Dystopian novel."
+              - column:
+                  name: cover_image
+                  value: "1984.jpg"
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 5
+              - column:
+                  name: title
+                  value: "Brave New World"
+              - column:
+                  name: author
+                  value: "Aldous Huxley"
+              - column:
+                  name: isbn
+                  value: "ISBN0005"
+              - column:
+                  name: price
+                  valueNumeric: 16.00
+              - column:
+                  name: description
+                  value: "Another dystopian novel."
+              - column:
+                  name: cover_image
+                  value: "brave_new_world.jpg"
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 6
+              - column:
+                  name: title
+                  value: "The Martian"
+              - column:
+                  name: author
+                  value: "Andy Weir"
+              - column:
+                  name: isbn
+                  value: "ISBN0006"
+              - column:
+                  name: price
+                  valueNumeric: 18.75
+              - column:
+                  name: description
+                  value: "Survival on Mars."
+              - column:
+                  name: cover_image
+                  value: "the_martian.jpg"
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 7
+              - column:
+                  name: title
+                  value: "Dune"
+              - column:
+                  name: author
+                  value: "Frank Herbert"
+              - column:
+                  name: isbn
+                  value: "ISBN0007"
+              - column:
+                  name: price
+                  valueNumeric: 22.00
+              - column:
+                  name: description
+                  value: "Epic science fiction saga."
+              - column:
+                  name: cover_image
+                  value: "dune.jpg"
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 8
+              - column:
+                  name: title
+                  value: "Harry Potter and the Sorcerer's Stone"
+              - column:
+                  name: author
+                  value: "J.K. Rowling"
+              - column:
+                  name: isbn
+                  value: "ISBN0008"
+              - column:
+                  name: price
+                  valueNumeric: 17.99
+              - column:
+                  name: description
+                  value: "The first Harry Potter book."
+              - column:
+                  name: cover_image
+                  value: "hp1.jpg"
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 9
+              - column:
+                  name: title
+                  value: "A Brief History of Time"
+              - column:
+                  name: author
+                  value: "Stephen Hawking"
+              - column:
+                  name: isbn
+                  value: "ISBN0009"
+              - column:
+                  name: price
+                  valueNumeric: 20.00
+              - column:
+                  name: description
+                  value: "Cosmology explained."
+              - column:
+                  name: cover_image
+                  value: "time.jpg"
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 10
+              - column:
+                  name: title
+                  value: "The Lord of the Rings"
+              - column:
+                  name: author
+                  value: "J.R.R. Tolkien"
+              - column:
+                  name: isbn
+                  value: "ISBN0010"
+              - column:
+                  name: price
+                  valueNumeric: 29.99
+              - column:
+                  name: description
+                  value: "Fantasy trilogy."
+              - column:
+                  name: cover_image
+                  value: "lotr.jpg"
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+  - changeSet:
+      id: 13-insert-books-categories
+      author: oleksiisukhenko
+      changes:
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueNumeric: 1
+              - column:
+                  name: category_id
+                  valueNumeric: 1
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueNumeric: 2
+              - column:
+                  name: category_id
+                  valueNumeric: 2
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueNumeric: 3
+              - column:
+                  name: category_id
+                  valueNumeric: 3
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueNumeric: 4
+              - column:
+                  name: category_id
+                  valueNumeric: 1
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueNumeric: 5
+              - column:
+                  name: category_id
+                  valueNumeric: 1
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueNumeric: 6
+              - column:
+                  name: category_id
+                  valueNumeric: 1
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueNumeric: 7
+              - column:
+                  name: category_id
+                  valueNumeric: 1
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueNumeric: 8
+              - column:
+                  name: category_id
+                  valueNumeric: 2
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueNumeric: 9
+              - column:
+                  name: category_id
+                  valueNumeric: 3
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueNumeric: 10
+              - column:
+                  name: category_id
+                  valueNumeric: 2
