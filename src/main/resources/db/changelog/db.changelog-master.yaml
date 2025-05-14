@@ -19,3 +19,7 @@ databaseChangeLog:
       file: db/changelog/changes/09-create-cart-items-table.yaml
   - include:
       file: db/changelog/changes/10-create-orders-and-order-items-tables.yaml
+  - include:
+      file: db/changelog/changes/11-insert-books-and-categories.yaml
+  - include:
+      file: db/changelog/changes/12-insert-admin-and-give-admin-role-to-him.yaml

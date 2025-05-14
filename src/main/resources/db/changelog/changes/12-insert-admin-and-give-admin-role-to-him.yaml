@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-admin
+      author: oleksiisukhenko
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: email
+                  value: "admin@mail.com"
+              - column:
+                  name: password
+                  value: "$2a$10$dziwv8ZOHut9ji2cbUjSb.4SAGz5/JTlsObxx319Pc1HXmlR2b.Ge"
+              - column:
+                  name: first_name
+                  value: "Admin"
+              - column:
+                  name: last_name
+                  value: "Admin"
+              - column:
+                  name: shipping_address
+                  value: "Admin address"
+
+  - changeSet:
+      id: set-role-admin-for-admin
+      author: oleksiisukhenko
+      changes:
+        - insert:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 1
+              - column:
+                  name: role_id
+                  valueNumeric: 1
