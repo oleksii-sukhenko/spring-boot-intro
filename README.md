@@ -161,7 +161,7 @@ A Postman collection is available to test endpoints. You can import the collecti
 * CRUD operations for books
 * Order flow
 
-[Download Postman Collection](https://.postman.co/workspace/My-Workspace~90ad4f1a-426c-45bd-8b83-d801a90d34a3/collection/38039570-fdbd8834-2ba0-42a0-bcb3-e6f69769f9b9?action=share&creator=38039570)
+[Download Postman Collection](https://www.postman.com/telecoms-architect-81065355/sukhenko-bookstore/collection/05s5t67/localhost-8080?action=share&creator=38039570)
 
 ---
 
