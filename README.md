@@ -15,11 +15,13 @@ It provides a solid foundation for beginners looking to grasp concepts like auth
 ## 📊 Technologies Used
 
 * **Java 17**
-* **Spring Boot**
+* **Spring Boot 3.2**
 * **Spring Security**
 * **Spring Data JPA**
 * **Hibernate Validator**
-* **MySQL** (deployed via Amazon RDS)
+* **MapStruct 1.5** for mapping between DTOs and entities
+* **Liquibase 4.27** for database version control
+* **MySQL 8** (deployed via Amazon RDS)
 * **Docker & Docker Compose**
 * **Swagger / OpenAPI** for API documentation
 * **Checkstyle** for code quality
@@ -135,10 +137,15 @@ docker-compose up --build
 
 ## 🌀 API Documentation
 
-Swagger is integrated for interactive API documentation. After running the application, visit:
+Interactive documentation available via Swagger UI:
 
+* Local:
 ```
 http://localhost:8080/api/swagger-ui/index.html
+```
+* Production:
+```
+http://ec2-3-83-161-155.compute-1.amazonaws.com/api/swagger-ui/index.html#/
 ```
 
 ---
@@ -167,7 +174,7 @@ A Postman collection is available to test endpoints. You can import the collecti
 
 ## 📹 Loom Demo
 
-Watch the demo video to see how everything works in action: [BookStore Loom Video Demo](https://www.loom.com/share/c011b45179f34c2da932dd12107f4876?sid=324145b1-ba30-44fa-9e9a-1e5b163e7acb)
+Watch the demo video to see how everything works in action: [BookStore Loom Video Demo](https://www.loom.com/share/e1c59c00de524a5f91a2a789424b1091?sid=5350be10-3f27-49d1-ae83-310c97e9c907)
 
 ---
 
